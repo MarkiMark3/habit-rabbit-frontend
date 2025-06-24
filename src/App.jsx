@@ -17,7 +17,7 @@ import { ResetPassword } from "./pages/ResetPassword.jsx";
 import { PassResetEmail } from "./pages/PassResetEmailPage.jsx";
 import { ChangeEmailPage } from "./pages/ChangeEmail.jsx";
 import { HabitsPage } from "./pages/habitsPage/habitsPage.jsx";
-import { TodoPage } from "./pages/todoPage/todoPage.jsx";
+import { TodoPage } from "./pages/todoPage/TodoPage.jsx";
 
 function App() {
   const navigate = useNavigate();
