@@ -4,6 +4,7 @@ import cn from "classnames";
 import { Formik, Form, Field } from "formik";
 import { habitsService } from "../../services/habits.server";
 import { usePageError } from "../../hooks/usePageError";
+import "./habitsPage.scss";
 
 export const HabitsPage = () => {
   const [error, setError] = usePageError("");
@@ -55,7 +56,9 @@ export const HabitsPage = () => {
   return (
     <>
       <div className="habits">
-        <h1 className="title is-2 has-text-centered">Habits for Today 🐇</h1>
+        <h1 className="title is-3 mb-4 has-text-centered ">
+          Habits for Today 🐇
+        </h1>
         <div className="container">
           <Formik
             initialValues={{ title: "" }}
@@ -79,9 +82,9 @@ export const HabitsPage = () => {
             {() => (
               <Form className="mb-4">
                 <div className="field has-addons">
-                  <div className="control">
+                  <div className="control is-expanded-mobile">
                     <Field
-                      className="input "
+                      className="input is-fullwidth "
                       type="text"
                       name="title"
                       data-cy="title-habits-page"

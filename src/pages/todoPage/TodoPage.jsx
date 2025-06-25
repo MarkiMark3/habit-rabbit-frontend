@@ -79,7 +79,7 @@ export const TodoPage = () => {
 
       <div className="box">
         <div
-          className="is-flex is-justify-content-space-between "
+          className="is-flex-desktop is-justify-content-space-between mb-4 "
           style={{ gap: "50px" }}
         >
           <Formik
@@ -103,9 +103,9 @@ export const TodoPage = () => {
             {() => (
               <Form className="mb-4">
                 <div className="field has-addons">
-                  <div className="control">
+                  <div className="control is-expanded">
                     <Field
-                      className="input"
+                      className="input is-fullwidth"
                       type="text"
                       name="title"
                       placeholder="New Todo"
