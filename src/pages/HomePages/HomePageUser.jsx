@@ -48,6 +48,12 @@ export const HomePageUser = () => {
 
   return (
     <section className="section">
+      <h1
+        className="title is-1 has-text-centered mb-4"
+        data-cy="username-home-page"
+      >
+        Welcome back {user.name}!👋
+      </h1>
       <div className="container">
         <h1 className="title">📈 Your Weekly Summary</h1>
 

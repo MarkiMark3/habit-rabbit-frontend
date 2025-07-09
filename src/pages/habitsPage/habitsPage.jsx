@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-import { authService } from "../../services/authService";
 import cn from "classnames";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { habitsService } from "../../services/habits.server";
 import { usePageError } from "../../hooks/usePageError";
 import "./habitsPage.scss";
 
 export const HabitsPage = () => {
-  const [error, setError] = usePageError("");
-  const [user, setUser] = useState({});
+  const [, setError] = usePageError("");
   const [habits, setHabits] = useState([]);
+  const [loading, isLoading] = useState(false);
+  const [loadingId, isLoadingId] = useState(null);
+  const [loadingHabit, isLoadingHabit] = useState(null);
 
   const fetchData = () => {
-    authService
-      .getUser()
-      .then(setUser)
-      .catch((error) => {
-        setError(error.message);
-      });
     habitsService
       .getHabits()
       .then(setHabits)
@@ -25,11 +20,22 @@ export const HabitsPage = () => {
         setError(error.message);
       });
   };
+
   useEffect(() => {
     fetchData();
   }, []);
 
+  function validHabit(value) {
+    if (!value) {
+      return "Habit Name is required";
+    }
+    if (value.trim() === "") {
+      return "Habit Name is required";
+    }
+  }
+
   const toggleHabit = (id) => {
+    isLoadingHabit(id);
     habitsService
       .toggleHabit({ id })
       .then(() => {
@@ -38,10 +44,13 @@ export const HabitsPage = () => {
       .catch((e) => {
         throw new Error(e);
       })
-      .finally(() => {});
+      .finally(() => {
+        isLoadingHabit(false);
+      });
   };
 
   const deleteHabit = (id) => {
+    isLoadingId(id);
     habitsService
       .deleteHabit({ id })
       .then(() => {
@@ -50,7 +59,9 @@ export const HabitsPage = () => {
       .catch((e) => {
         throw new Error(e);
       })
-      .finally(() => {});
+      .finally(() => {
+        isLoadingId(null);
+      });
   };
 
   return (
@@ -63,6 +74,7 @@ export const HabitsPage = () => {
           <Formik
             initialValues={{ title: "" }}
             onSubmit={({ title }, formikHelpers) => {
+              isLoading(true);
               formikHelpers.setSubmitting(true);
 
               habitsService
@@ -76,6 +88,7 @@ export const HabitsPage = () => {
                 })
                 .finally(() => {
                   formikHelpers.setSubmitting(false);
+                  isLoading(false);
                 });
             }}
           >
@@ -84,6 +97,7 @@ export const HabitsPage = () => {
                 <div className="field has-addons">
                   <div className="control is-expanded-mobile">
                     <Field
+                      validate={validHabit}
                       className="input is-fullwidth "
                       type="text"
                       name="title"
@@ -94,13 +108,20 @@ export const HabitsPage = () => {
                   <div className="control">
                     <button
                       type="submit"
-                      className="button is-primary"
+                      className={cn("button is-primary", {
+                        "is-loading": loading,
+                      })}
                       data-cy="addHabitButton-habits-page"
                     >
                       Add
                     </button>
                   </div>
                 </div>
+                <ErrorMessage
+                  name="title"
+                  component="p"
+                  className="help is-danger"
+                />
               </Form>
             )}
           </Formik>
@@ -130,6 +151,7 @@ export const HabitsPage = () => {
                     className={cn("button", {
                       "is-danger": habit.status,
                       "is-success": !habit.status,
+                      "is-loading": habit.id === loadingHabit,
                     })}
                     data-cy="habitButton-habits-page"
                     onClick={() => toggleHabit(habit.id)}
@@ -149,7 +171,9 @@ export const HabitsPage = () => {
                   </p>
                 </div>
                 <button
-                  className="button is-danger is-small"
+                  className={cn("button is-danger is-small", {
+                    "is-loading": habit.id === loadingId,
+                  })}
                   data-cy="habitDeleteButton-habits-page"
                   onClick={() => deleteHabit(habit.id)}
                 >

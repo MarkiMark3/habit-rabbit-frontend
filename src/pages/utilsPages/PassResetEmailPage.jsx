@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import { Formik, Form, Field } from "formik";
 import cn from "classnames";
 
-import { AuthContext } from "../components/AuthContext.jsx";
-import { usePageError } from "../hooks/usePageError.js";
-import { authService } from "../services/authService.js";
+import { usePageError } from "../../hooks/usePageError.js";
+import { authService } from "../../services/authService.js";
 
 function validateEmail(value) {
   if (!value) {
@@ -19,22 +18,8 @@ function validateEmail(value) {
   }
 }
 
-function validatePassword(value) {
-  if (!value) {
-    return "Password is required";
-  }
-
-  if (value.length < 6) {
-    return "At least 6 characters";
-  }
-}
-
 export const PassResetEmail = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [error, setError] = usePageError("");
-  const { reset } = useContext(AuthContext);
 
   const [sentEmail, setSentEmail] = useState(false);
 
@@ -60,7 +45,7 @@ export const PassResetEmail = () => {
             .then(() => {
               setSentEmail(true);
             })
-            .catch((e) => {
+            .catch((error) => {
               setError(error.response?.data?.message);
             });
         }}

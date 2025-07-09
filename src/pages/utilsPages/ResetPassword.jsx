@@ -1,11 +1,9 @@
-import React, { useContext, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import cn from "classnames";
 
-import { AuthContext } from "../components/AuthContext.jsx";
-import { usePageError } from "../hooks/usePageError.js";
-import { authService } from "../services/authService.js";
+import { usePageError } from "../../hooks/usePageError.js";
+import { authService } from "../../services/authService.js";
 
 function validatePassword(value) {
   if (!value) {
@@ -18,9 +16,6 @@ function validatePassword(value) {
 }
 
 export const ResetPassword = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [error, setError] = usePageError("");
 
   const [reset, setReset] = useState(false);

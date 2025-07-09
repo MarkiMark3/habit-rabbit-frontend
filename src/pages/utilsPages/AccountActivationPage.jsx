@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { AuthContext } from "../components/AuthContext.jsx";
-import { Loader } from "../components/Loader.jsx";
+import { AuthContext } from "../../components/AuthContext.jsx";
+import { Loader } from "../../components/Loader.jsx";
 
 export const AccountActivationPage = () => {
   const [error, setError] = useState("");

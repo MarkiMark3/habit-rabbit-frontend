@@ -1,24 +1,19 @@
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useEffect, useState } from "react";
 import cn from "classnames";
 import { todosService } from "../../services/todo.server";
 import { usePageError } from "../../hooks/usePageError";
-import { authService } from "../../services/authService";
 
 export const TodoPage = () => {
-  const [error, setError] = usePageError("");
-  const [user, setUser] = useState({});
+  const [, setError] = usePageError("");
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
+  const [loading, isLoading] = useState(false);
+  const [loadingId, isLoadingId] = useState(null);
+  const [loadingTodo, isLoadingTodo] = useState(null);
 
   const fetchData = () => {
-    authService
-      .getUser()
-      .then(setUser)
-      .catch((error) => {
-        setError(error.message);
-      });
     todosService
       .getTodos()
       .then(setTodos)
@@ -38,6 +33,15 @@ export const TodoPage = () => {
     return title.includes(params);
   });
 
+  function validTodo(value) {
+    if (!value) {
+      return "Todo Name is required";
+    }
+    if (value.trim() === "") {
+      return "Todo Name is required";
+    }
+  }
+
   function filterSortBy(option) {
     switch (option) {
       case "In progress":
@@ -50,6 +54,7 @@ export const TodoPage = () => {
   }
 
   const toggleTodo = (id) => {
+    isLoadingTodo(id);
     todosService
       .toggleTodo({ id })
       .then(() => {
@@ -58,10 +63,13 @@ export const TodoPage = () => {
       .catch((e) => {
         throw new Error(e);
       })
-      .finally(() => {});
+      .finally(() => {
+        isLoadingTodo(null);
+      });
   };
 
   const deleteTodo = (id) => {
+    isLoadingId(id);
     todosService
       .deleteTodo({ id })
       .then(() => {
@@ -70,7 +78,9 @@ export const TodoPage = () => {
       .catch((e) => {
         throw new Error(e);
       })
-      .finally(() => {});
+      .finally(() => {
+        isLoadingId(null);
+      });
   };
 
   return (
@@ -86,6 +96,7 @@ export const TodoPage = () => {
             initialValues={{ title: "" }}
             onSubmit={({ title }, formikHelpers) => {
               formikHelpers.setSubmitting(true);
+              isLoading(true);
               todosService
                 .addTodo({ title })
                 .then(() => {
@@ -97,6 +108,7 @@ export const TodoPage = () => {
                 })
                 .finally(() => {
                   formikHelpers.setSubmitting(false);
+                  isLoading(false);
                 });
             }}
           >
@@ -105,6 +117,7 @@ export const TodoPage = () => {
                 <div className="field has-addons">
                   <div className="control is-expanded">
                     <Field
+                      validate={validTodo}
                       className="input is-fullwidth"
                       type="text"
                       name="title"
@@ -115,13 +128,20 @@ export const TodoPage = () => {
                   <div className="control">
                     <button
                       type="submit"
-                      className="button is-primary"
+                      className={cn("button is-primary", {
+                        "is-loading": loading,
+                      })}
                       data-cy="addTodoButton-todos-page"
                     >
                       Add Todo
                     </button>
                   </div>
                 </div>
+                <ErrorMessage
+                  name="title"
+                  component="p"
+                  className="help is-danger"
+                />
               </Form>
             )}
           </Formik>
@@ -181,6 +201,7 @@ export const TodoPage = () => {
                 className={cn("button", {
                   "is-danger": todo.status,
                   "is-success": !todo.status,
+                  "is-loading": todo.id === loadingTodo,
                 })}
                 onClick={() => {
                   toggleTodo(todo.id);
@@ -200,7 +221,9 @@ export const TodoPage = () => {
 
               <button
                 data-cy="todoDeleteButton-todos-page"
-                className="button is-danger is-small"
+                className={cn("button is-danger is-small", {
+                  "is-loading": todo.id === loadingId,
+                })}
                 onClick={() => deleteTodo(todo.id)}
               >
                 X

@@ -1,21 +1,21 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Routes, Route, Link, useNavigate, NavLink } from "react-router-dom";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./styles.scss";
 
-import { AccountActivationPage } from "./pages/AccountActivationPage";
+import { AccountActivationPage } from "./pages/utilsPages/AccountActivationPage";
 import { AuthContext } from "./components/AuthContext";
-import { LoginPage } from "./pages/LoginPage";
-import { RegistrationPage } from "./pages/RegistrationPage";
+import { LoginPage } from "./pages/loginPage/LoginPage.jsx";
+import { RegistrationPage } from "./pages/utilsPages/RegistrationPage";
 import { RequireAuth } from "./components/RequireAuth";
 import { UsersPage } from "./pages/userPage/UsersPage.jsx";
 import { Loader } from "./components/Loader.jsx";
-import { HomePage } from "./pages/HomePage.jsx";
+import { HomePage } from "./pages/HomePages/HomePage.jsx";
 import { usePageError } from "./hooks/usePageError.js";
-import { ResetPassword } from "./pages/ResetPassword.jsx";
-import { PassResetEmail } from "./pages/PassResetEmailPage.jsx";
-import { ChangeEmailPage } from "./pages/ChangeEmail.jsx";
+import { ResetPassword } from "./pages/utilsPages/ResetPassword.jsx";
+import { PassResetEmail } from "./pages/utilsPages/PassResetEmailPage.jsx";
+import { ChangeEmailPage } from "./pages/utilsPages/ChangeEmail.jsx";
 import { HabitsPage } from "./pages/habitsPage/habitsPage.jsx";
 import { TodoPage } from "./pages/todoPage/TodoPage.jsx";
 

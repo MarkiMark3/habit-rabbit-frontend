@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import cn from "classnames";
 
-import { authService } from "../services/authService.js";
-import { usePageError } from "../hooks/usePageError.js";
+import { AuthContext } from "../../components/AuthContext.jsx";
+import { usePageError } from "../../hooks/usePageError.js";
 
 function validateEmail(value) {
   if (!value) {
@@ -18,16 +18,7 @@ function validateEmail(value) {
   }
 }
 
-function validName(value) {
-  if (!value) {
-    return "Name is required";
-  }
-  if (value.trim() === "") {
-    return "Name is required";
-  }
-}
-
-const validatePassword = (value) => {
+function validatePassword(value) {
   if (!value) {
     return "Password is required";
   }
@@ -35,98 +26,39 @@ const validatePassword = (value) => {
   if (value.length < 6) {
     return "At least 6 characters";
   }
-};
+}
 
-export const RegistrationPage = () => {
+export const LoginPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [error, setError] = usePageError("");
-  const [registered, setRegistered] = useState(false);
-
-  if (registered) {
-    return (
-      <section className="">
-        <h1 className="title">Check your email</h1>
-        <p>We have sent you an email with the activation link</p>
-      </section>
-    );
-  }
+  const { login } = useContext(AuthContext);
 
   return (
     <>
       <Formik
         initialValues={{
-          name: "",
           email: "",
           password: "",
         }}
         validateOnMount={true}
-        onSubmit={({ name, email, password }, formikHelpers) => {
-          formikHelpers.setSubmitting(true);
-
-          authService
-            .register({ name, email, password })
+        onSubmit={({ email, password }) => {
+          return login({ email, password })
             .then(() => {
-              setRegistered(true);
+              navigate(location.state?.from?.pathname || "/");
             })
             .catch((error) => {
-              if (error.message) {
-                setError(error.message);
+              setError(error.response?.data?.message);
+              if (error.response?.status === 404) {
+                // navigate(location.state?.from?.pathname || "/sign-up");
               }
-
-              if (!error.response?.data) {
-                return;
-              }
-
-              const { errors, message } = error.response.data;
-
-              formikHelpers.setFieldError("name", errors?.name);
-              formikHelpers.setFieldError("email", errors?.email);
-              formikHelpers.setFieldError("password", errors?.password);
-
-              if (message) {
-                setError(message);
-              }
-            })
-            .finally(() => {
-              formikHelpers.setSubmitting(false);
             });
         }}
       >
         {({ touched, errors, isSubmitting }) => (
           <Form className="box">
-            <h1 className="title">Sign up</h1>
-            <div className="field">
-              <label htmlFor="name" className="label">
-                Name
-              </label>
-
-              <div className="control has-icons-left has-icons-right">
-                <Field
-                  validate={validName}
-                  name="name"
-                  type="text"
-                  id="name"
-                  data-cy="name-sign-up"
-                  placeholder="John Doe"
-                  className={cn("input", {
-                    "is-danger": touched.name && errors.name,
-                  })}
-                />
-
-                <span className="icon is-small is-left">
-                  <i className="fa fa-user"></i>
-                </span>
-
-                {touched.name && errors.name && (
-                  <span className="icon is-small is-right has-text-danger">
-                    <i className="fas fa-exclamation-triangle"></i>
-                  </span>
-                )}
-              </div>
-
-              {touched.name && errors.name && (
-                <p className="help is-danger">{errors.name}</p>
-              )}
-            </div>
+            <h1 className="title">Log in</h1>
             <div className="field">
               <label htmlFor="email" className="label">
                 Email
@@ -137,8 +69,8 @@ export const RegistrationPage = () => {
                   validate={validateEmail}
                   name="email"
                   type="email"
-                  data-cy="email-sign-up"
                   id="email"
+                  data-cy="email-login"
                   placeholder="e.g. bobsmith@gmail.com"
                   className={cn("input", {
                     "is-danger": touched.email && errors.email,
@@ -171,7 +103,7 @@ export const RegistrationPage = () => {
                   name="password"
                   type="password"
                   id="password"
-                  data-cy="password-sign-up"
+                  data-cy="password-login"
                   placeholder="*******"
                   className={cn("input", {
                     "is-danger": touched.password && errors.password,
@@ -198,16 +130,20 @@ export const RegistrationPage = () => {
             <div className="field">
               <button
                 type="submit"
-                data-cy="submit-sign-up"
+                data-cy="button-login"
                 className={cn("button is-success has-text-weight-bold", {
                   "is-loading": isSubmitting,
                 })}
                 disabled={isSubmitting || errors.email || errors.password}
               >
-                Sign up
+                Log in
               </button>
             </div>
-            Already have an account? <Link to="/login">Log in</Link>
+            Do not have an account? <Link to="/sign-up">Sign up</Link>
+            <>
+              <br />
+            </>
+            Forgot your password? <Link to="/reset">Recover Password</Link>
           </Form>
         )}
       </Formik>

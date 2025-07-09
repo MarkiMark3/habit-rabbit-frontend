@@ -1,6 +1,12 @@
 export const HomePageNew = () => {
   return (
     <div>
+      <h1
+        className="title is-1 has-text-centered mb-4"
+        data-cy="username-home-page"
+      >
+        Welcome to Habit Rabbit!🐰
+      </h1>
       <section className="hero is-light is-fullheight">
         <div className="hero-body has-text-centered">
           <div className="container">

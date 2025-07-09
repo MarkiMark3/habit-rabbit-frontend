@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Loader } from "../components/Loader.jsx";
-import { authService } from "../services/authService.js";
+import { Loader } from "../../components/Loader.jsx";
+import { authService } from "../../services/authService.js";
 
 export const ChangeEmailPage = () => {
   const [error, setError] = useState("");

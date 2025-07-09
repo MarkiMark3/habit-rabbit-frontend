@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePageError } from "../../hooks/usePageError.js";
 import "./userPage.scss";
-// import { userService } from "../services/userService.js";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import cn from "classnames";
@@ -69,6 +68,12 @@ export const UsersPage = () => {
   return (
     <div className="content">
       <h1 className="title is-2">Settings⚙️</h1>
+
+      <p className="title is-bold is-4">
+        Hi {user.name}👋! <br />
+        This is your settings page.
+        <br /> You can change your 🪪Name, 📬Email and 🕵️Password.
+      </p>
 
       <div className="userPageForms">
         <Formik

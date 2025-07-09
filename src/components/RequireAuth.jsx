@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "./AuthContext.jsx";
 import { Loader } from "./Loader.jsx";
 
