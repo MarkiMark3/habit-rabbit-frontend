@@ -51,7 +51,7 @@ export const RegistrationPage = () => {
   }
 
   return (
-    <div className="container is-flex is-justify-content-center is-align-items-center">
+    <div className="container is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
       <Formik
         initialValues={{
           name: "",
