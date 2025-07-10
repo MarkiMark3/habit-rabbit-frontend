@@ -36,7 +36,7 @@ export const LoginPage = () => {
   const { login } = useContext(AuthContext);
 
   return (
-    <>
+    <div className="container is-flex is-justify-content-center is-align-items-center">
       <Formik
         initialValues={{
           email: "",
@@ -50,14 +50,11 @@ export const LoginPage = () => {
             })
             .catch((error) => {
               setError(error.response?.data?.message);
-              if (error.response?.status === 404) {
-                // navigate(location.state?.from?.pathname || "/sign-up");
-              }
             });
         }}
       >
         {({ touched, errors, isSubmitting }) => (
-          <Form className="box">
+          <Form className="box column is-half">
             <h1 className="title">Log in</h1>
             <div className="field">
               <label htmlFor="email" className="label">
@@ -149,6 +146,6 @@ export const LoginPage = () => {
       </Formik>
 
       {error && <p className="notification is-danger is-light">{error}</p>}
-    </>
+    </div>
   );
 };

@@ -53,7 +53,7 @@ export const PassResetEmail = () => {
         {({ touched, errors, isSubmitting }) => (
           <Form className="box">
             <h1 className="title">Reset Password</h1>
-            <div className="field">
+            <div className="field mb-4">
               <label htmlFor="email" className="label">
                 Email
               </label>

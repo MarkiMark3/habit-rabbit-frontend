@@ -51,7 +51,7 @@ export const RegistrationPage = () => {
   }
 
   return (
-    <>
+    <div className="container is-flex is-justify-content-center is-align-items-center">
       <Formik
         initialValues={{
           name: "",
@@ -92,7 +92,7 @@ export const RegistrationPage = () => {
         }}
       >
         {({ touched, errors, isSubmitting }) => (
-          <Form className="box">
+          <Form className="box column is-half">
             <h1 className="title">Sign up</h1>
             <div className="field">
               <label htmlFor="name" className="label">
@@ -213,6 +213,6 @@ export const RegistrationPage = () => {
       </Formik>
 
       {error && <p className="notification is-danger is-light">{error}</p>}
-    </>
+    </div>
   );
 };
