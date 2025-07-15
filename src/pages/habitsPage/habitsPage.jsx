@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
-import cn from "classnames";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { habitsService } from "../../services/habits.server";
-import { usePageError } from "../../hooks/usePageError";
-import "./habitsPage.scss";
+import { useEffect, useState } from 'react';
+import cn from 'classnames';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { habitsService } from '../../services/habits.server';
+import { usePageError } from '../../hooks/usePageError';
+import './HabitsPage.scss';
+import { validate } from '../../services/validators';
 
 export const HabitsPage = () => {
-  const [, setError] = usePageError("");
+  const [, setError] = usePageError('');
   const [habits, setHabits] = useState([]);
   const [loading, isLoading] = useState(false);
   const [loadingId, isLoadingId] = useState(null);
@@ -24,15 +25,6 @@ export const HabitsPage = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  function validHabit(value) {
-    if (!value) {
-      return "Habit Name is required";
-    }
-    if (value.trim() === "") {
-      return "Habit Name is required";
-    }
-  }
 
   const toggleHabit = (id) => {
     isLoadingHabit(id);
@@ -72,7 +64,7 @@ export const HabitsPage = () => {
         </h1>
         <div className="container">
           <Formik
-            initialValues={{ title: "" }}
+            initialValues={{ title: '' }}
             onSubmit={({ title }, formikHelpers) => {
               isLoading(true);
               formikHelpers.setSubmitting(true);
@@ -97,7 +89,7 @@ export const HabitsPage = () => {
                 <div className="field has-addons">
                   <div className="control is-expanded-mobile">
                     <Field
-                      validate={validHabit}
+                      validate={validate.name}
                       className="input is-fullwidth "
                       type="text"
                       name="title"
@@ -108,8 +100,8 @@ export const HabitsPage = () => {
                   <div className="control">
                     <button
                       type="submit"
-                      className={cn("button is-primary", {
-                        "is-loading": loading,
+                      className={cn('button is-primary', {
+                        'is-loading': loading,
                       })}
                       data-cy="addHabitButton-habits-page"
                     >
@@ -131,32 +123,32 @@ export const HabitsPage = () => {
                 key={habit.id}
                 data-cy="habitBox-habits-page"
                 className={cn(
-                  "is-flex is-align-items-center is-justify-content-space-between mb-2",
+                  'is-flex is-align-items-center is-justify-content-space-between mb-2',
                   {
-                    "has-background-success-light": habit.status,
+                    'has-background-success-light': habit.status,
                   }
                 )}
                 style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "6px",
-                  padding: "10px",
-                  gap: "20px",
+                  border: '1px solid #ddd',
+                  borderRadius: '6px',
+                  padding: '10px',
+                  gap: '20px',
                 }}
               >
                 <div
                   className="is-flex is-align-items-center is-justify-content-space-between"
-                  style={{ flex: 1, gap: "20px" }}
+                  style={{ flex: 1, gap: '20px' }}
                 >
                   <button
-                    className={cn("button", {
-                      "is-danger": habit.status,
-                      "is-success": !habit.status,
-                      "is-loading": habit.id === loadingHabit,
+                    className={cn('button', {
+                      'is-danger': habit.status,
+                      'is-success': !habit.status,
+                      'is-loading': habit.id === loadingHabit,
                     })}
                     data-cy="habitButton-habits-page"
                     onClick={() => toggleHabit(habit.id)}
                   >
-                    {habit.status ? "Undo" : "Done"}
+                    {habit.status ? 'Undo' : 'Done'}
                   </button>
 
                   <p data-cy="habitTitle-habit-page" className="ml-2">
@@ -165,14 +157,14 @@ export const HabitsPage = () => {
 
                   <p
                     className="is-size-5"
-                    style={{ minWidth: "50px", textAlign: "right" }}
+                    style={{ minWidth: '50px', textAlign: 'right' }}
                   >
-                    {+habit.streak !== 0 ? `${+habit.streak}🔥` : "🪵"}
+                    {+habit.streak !== 0 ? `${+habit.streak}🔥` : '🪵'}
                   </p>
                 </div>
                 <button
-                  className={cn("button is-danger is-small", {
-                    "is-loading": habit.id === loadingId,
+                  className={cn('button is-danger is-small', {
+                    'is-loading': habit.id === loadingId,
                   })}
                   data-cy="habitDeleteButton-habits-page"
                   onClick={() => deleteHabit(habit.id)}

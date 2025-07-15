@@ -1,46 +1,16 @@
-import { useEffect, useState } from "react";
-import { usePageError } from "../../hooks/usePageError.js";
-import "./userPage.scss";
-import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
-import cn from "classnames";
-import { authService } from "../../services/authService.js";
-
-function validName(value) {
-  if (!value) {
-    return "Name is required";
-  }
-  if (value.trim() === "") {
-    return "Name is required";
-  }
-}
-
-function validatePassword(value) {
-  if (!value) {
-    return "Password is required";
-  }
-
-  if (value.length < 6) {
-    return "At least 6 characters";
-  }
-}
-
-function validateEmail(value) {
-  if (!value) {
-    return "Email is required";
-  }
-
-  const emailPattern = /^[\w.+-]+@([\w-]+\.){1,3}[\w-]{2,}$/;
-
-  if (!emailPattern.test(value)) {
-    return "Email is not valid";
-  }
-}
+import { useEffect, useState } from 'react';
+import { usePageError } from '../../hooks/usePageError.js';
+import './UserPage.scss';
+import { Link } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import cn from 'classnames';
+import { authService } from '../../services/authService.js';
+import { validate } from '../../services/validators.js';
 
 export const UsersPage = () => {
-  const [error, setError] = usePageError("");
+  const [error, setError] = usePageError('');
   const [user, setUser] = useState({});
-  const [resetPass, setResetPass] = useState("");
+  const [resetPass, setResetPass] = useState('');
 
   const fetchUser = () => {
     authService
@@ -78,7 +48,7 @@ export const UsersPage = () => {
       <div className="userPageForms">
         <Formik
           initialValues={{
-            name: "",
+            name: '',
           }}
           validateOnMount={true}
           onSubmit={({ name }, formikHelpers) => {
@@ -101,7 +71,7 @@ export const UsersPage = () => {
 
                 const { errors, message } = error.response.data;
 
-                formikHelpers.setFieldError("name", errors?.name);
+                formikHelpers.setFieldError('name', errors?.name);
 
                 if (message) {
                   setError(message);
@@ -122,13 +92,13 @@ export const UsersPage = () => {
 
                 <div className="control has-icons-left has-icons-right">
                   <Field
-                    validate={validName}
+                    validate={validate.name}
                     name="name"
                     type="text"
                     id="name"
                     placeholder="John Doe"
-                    className={cn("input", {
-                      "is-danger": touched.name && errors.name,
+                    className={cn('input', {
+                      'is-danger': touched.name && errors.name,
                     })}
                   />
 
@@ -151,8 +121,8 @@ export const UsersPage = () => {
               <div className="field">
                 <button
                   type="submit"
-                  className={cn("button is-success has-text-weight-bold", {
-                    "is-loading": isSubmitting,
+                  className={cn('button is-success has-text-weight-bold', {
+                    'is-loading': isSubmitting,
                   })}
                   disabled={isSubmitting || errors.name}
                 >
@@ -165,8 +135,8 @@ export const UsersPage = () => {
 
         <Formik
           initialValues={{
-            password: "",
-            email: "",
+            password: '',
+            email: '',
           }}
           validateOnMount={true}
           onSubmit={({ password, email }, formikHelpers) => {
@@ -188,7 +158,7 @@ export const UsersPage = () => {
 
                 const { errors, message } = error.response.data;
 
-                formikHelpers.setFieldError("name", errors?.name);
+                formikHelpers.setFieldError('name', errors?.name);
 
                 if (message) {
                   setError(message);
@@ -209,13 +179,13 @@ export const UsersPage = () => {
 
                 <div className="control has-icons-left has-icons-right">
                   <Field
-                    validate={validatePassword}
+                    validate={validate.password}
                     name="password"
                     type="password"
                     id="password"
                     placeholder="*******"
-                    className={cn("input", {
-                      "is-danger": touched.password && errors.password,
+                    className={cn('input', {
+                      'is-danger': touched.password && errors.password,
                     })}
                   />
 
@@ -243,13 +213,13 @@ export const UsersPage = () => {
 
                 <div className="control has-icons-left has-icons-right">
                   <Field
-                    validate={validateEmail}
+                    validate={validate.email}
                     name="email"
                     type="email"
                     id="email"
                     placeholder="e.g. bobsmith@gmail.com"
-                    className={cn("input", {
-                      "is-danger": touched.email && errors.email,
+                    className={cn('input', {
+                      'is-danger': touched.email && errors.email,
                     })}
                   />
 
@@ -271,8 +241,8 @@ export const UsersPage = () => {
               <div className="field">
                 <button
                   type="submit"
-                  className={cn("button is-success has-text-weight-bold", {
-                    "is-loading": isSubmitting,
+                  className={cn('button is-success has-text-weight-bold', {
+                    'is-loading': isSubmitting,
                   })}
                   disabled={isSubmitting || errors.email || errors.password}
                 >
@@ -284,9 +254,9 @@ export const UsersPage = () => {
         </Formik>
         <Formik
           initialValues={{
-            oldPassword: "",
-            newPassword: "",
-            confPassword: "",
+            oldPassword: '',
+            newPassword: '',
+            confPassword: '',
           }}
           validateOnMount={true}
           onSubmit={(
@@ -298,7 +268,7 @@ export const UsersPage = () => {
             authService
               .changePassword({ oldPassword, newPassword, confPassword })
               .then(() => {
-                setResetPass("Password was Changed!");
+                setResetPass('Password was Changed!');
               })
               .catch((error) => {
                 if (error.message) {
@@ -311,7 +281,7 @@ export const UsersPage = () => {
 
                 const { errors, message } = error.response.data;
 
-                formikHelpers.setFieldError("name", errors?.name);
+                formikHelpers.setFieldError('name', errors?.name);
 
                 if (message) {
                   setError(message);
@@ -332,13 +302,13 @@ export const UsersPage = () => {
 
                 <div className="control has-icons-left has-icons-right">
                   <Field
-                    validate={validatePassword}
+                    validate={validate.password}
                     name="oldPassword"
                     type="password"
                     id="oldPassword"
                     placeholder="*******"
-                    className={cn("input", {
-                      "is-danger": touched.oldPassword && errors.oldPassword,
+                    className={cn('input', {
+                      'is-danger': touched.oldPassword && errors.oldPassword,
                     })}
                   />
 
@@ -366,13 +336,13 @@ export const UsersPage = () => {
 
                 <div className="control has-icons-left has-icons-right">
                   <Field
-                    validate={validatePassword}
+                    validate={validate.password}
                     name="newPassword"
                     type="password"
                     id="newPassword"
                     placeholder="*******"
-                    className={cn("input", {
-                      "is-danger": touched.newPassword && errors.newPassword,
+                    className={cn('input', {
+                      'is-danger': touched.newPassword && errors.newPassword,
                     })}
                   />
 
@@ -401,13 +371,13 @@ export const UsersPage = () => {
 
                 <div className="control has-icons-left has-icons-right">
                   <Field
-                    validate={validatePassword}
+                    validate={validate.password}
                     name="confPassword"
                     type="password"
                     id="confPassword"
                     placeholder="*******"
-                    className={cn("input", {
-                      "is-danger": touched.confPassword && errors.confPassword,
+                    className={cn('input', {
+                      'is-danger': touched.confPassword && errors.confPassword,
                     })}
                   />
 
@@ -431,8 +401,8 @@ export const UsersPage = () => {
               <div className="field">
                 <button
                   type="submit"
-                  className={cn("button is-success has-text-weight-bold", {
-                    "is-loading": isSubmitting,
+                  className={cn('button is-success has-text-weight-bold', {
+                    'is-loading': isSubmitting,
                   })}
                   disabled={isSubmitting || errors.confPassword}
                 >

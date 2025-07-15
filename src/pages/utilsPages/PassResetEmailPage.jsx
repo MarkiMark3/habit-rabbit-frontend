@@ -1,25 +1,14 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Formik, Form, Field } from "formik";
-import cn from "classnames";
+import { Formik, Form, Field } from 'formik';
+import cn from 'classnames';
 
-import { usePageError } from "../../hooks/usePageError.js";
-import { authService } from "../../services/authService.js";
-
-function validateEmail(value) {
-  if (!value) {
-    return "Email is required";
-  }
-
-  const emailPattern = /^[\w.+-]+@([\w-]+\.){1,3}[\w-]{2,}$/;
-
-  if (!emailPattern.test(value)) {
-    return "Email is not valid";
-  }
-}
+import { usePageError } from '../../hooks/usePageError.js';
+import { authService } from '../../services/authService.js';
+import { validate } from '../../services/validators.js';
 
 export const PassResetEmail = () => {
-  const [error, setError] = usePageError("");
+  const [error, setError] = usePageError('');
 
   const [sentEmail, setSentEmail] = useState(false);
 
@@ -36,7 +25,7 @@ export const PassResetEmail = () => {
     <>
       <Formik
         initialValues={{
-          email: "",
+          email: '',
         }}
         validateOnMount={true}
         onSubmit={({ email }) => {
@@ -60,13 +49,13 @@ export const PassResetEmail = () => {
 
               <div className="control has-icons-left has-icons-right">
                 <Field
-                  validate={validateEmail}
+                  validate={validate.email}
                   name="email"
                   type="email"
                   id="email"
                   placeholder="e.g. bobsmith@gmail.com"
-                  className={cn("input", {
-                    "is-danger": touched.email && errors.email,
+                  className={cn('input', {
+                    'is-danger': touched.email && errors.email,
                   })}
                 />
 
@@ -88,8 +77,8 @@ export const PassResetEmail = () => {
             <div className="field">
               <button
                 type="submit"
-                className={cn("button is-success has-text-weight-bold", {
-                  "is-loading": isSubmitting,
+                className={cn('button is-success has-text-weight-bold', {
+                  'is-loading': isSubmitting,
                 })}
                 disabled={isSubmitting || errors.email}
               >

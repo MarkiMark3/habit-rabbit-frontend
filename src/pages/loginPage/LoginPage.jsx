@@ -1,52 +1,31 @@
-import { useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
-import cn from "classnames";
+import { useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import cn from 'classnames';
 
-import { AuthContext } from "../../components/AuthContext.jsx";
-import { usePageError } from "../../hooks/usePageError.js";
-
-function validateEmail(value) {
-  if (!value) {
-    return "Email is required";
-  }
-
-  const emailPattern = /^[\w.+-]+@([\w-]+\.){1,3}[\w-]{2,}$/;
-
-  if (!emailPattern.test(value)) {
-    return "Email is not valid";
-  }
-}
-
-function validatePassword(value) {
-  if (!value) {
-    return "Password is required";
-  }
-
-  if (value.length < 6) {
-    return "At least 6 characters";
-  }
-}
+import { AuthContext } from '../../components/AuthContext.jsx';
+import { usePageError } from '../../hooks/usePageError.js';
+import { validate } from '../../services/validators.js';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [error, setError] = usePageError("");
+  const [error, setError] = usePageError('');
   const { login } = useContext(AuthContext);
 
   return (
     <div className="container is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
       <Formik
         initialValues={{
-          email: "",
-          password: "",
+          email: '',
+          password: '',
         }}
         validateOnMount={true}
         onSubmit={({ email, password }) => {
           return login({ email, password })
             .then(() => {
-              navigate(location.state?.from?.pathname || "/");
+              navigate(location.state?.from?.pathname || '/');
             })
             .catch((error) => {
               setError(error.response?.data?.message);
@@ -63,14 +42,14 @@ export const LoginPage = () => {
 
               <div className="control has-icons-left has-icons-right">
                 <Field
-                  validate={validateEmail}
+                  validate={validate.email}
                   name="email"
                   type="email"
                   id="email"
                   data-cy="email-login"
                   placeholder="e.g. bobsmith@gmail.com"
-                  className={cn("input", {
-                    "is-danger": touched.email && errors.email,
+                  className={cn('input', {
+                    'is-danger': touched.email && errors.email,
                   })}
                 />
 
@@ -96,14 +75,14 @@ export const LoginPage = () => {
 
               <div className="control has-icons-left has-icons-right">
                 <Field
-                  validate={validatePassword}
+                  validate={validate.password}
                   name="password"
                   type="password"
                   id="password"
                   data-cy="password-login"
                   placeholder="*******"
-                  className={cn("input", {
-                    "is-danger": touched.password && errors.password,
+                  className={cn('input', {
+                    'is-danger': touched.password && errors.password,
                   })}
                 />
 
@@ -128,8 +107,8 @@ export const LoginPage = () => {
               <button
                 type="submit"
                 data-cy="button-login"
-                className={cn("button is-success has-text-weight-bold", {
-                  "is-loading": isSubmitting,
+                className={cn('button is-success has-text-weight-bold', {
+                  'is-loading': isSubmitting,
                 })}
                 disabled={isSubmitting || errors.email || errors.password}
               >

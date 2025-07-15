@@ -1,44 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
-import cn from "classnames";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import cn from 'classnames';
 
-import { authService } from "../../services/authService.js";
-import { usePageError } from "../../hooks/usePageError.js";
-
-function validateEmail(value) {
-  if (!value) {
-    return "Email is required";
-  }
-
-  const emailPattern = /^[\w.+-]+@([\w-]+\.){1,3}[\w-]{2,}$/;
-
-  if (!emailPattern.test(value)) {
-    return "Email is not valid";
-  }
-}
-
-function validName(value) {
-  if (!value) {
-    return "Name is required";
-  }
-  if (value.trim() === "") {
-    return "Name is required";
-  }
-}
-
-const validatePassword = (value) => {
-  if (!value) {
-    return "Password is required";
-  }
-
-  if (value.length < 6) {
-    return "At least 6 characters";
-  }
-};
+import { authService } from '../../services/authService.js';
+import { usePageError } from '../../hooks/usePageError.js';
+import { validate } from '../../services/validators.js';
 
 export const RegistrationPage = () => {
-  const [error, setError] = usePageError("");
+  const [error, setError] = usePageError('');
   const [registered, setRegistered] = useState(false);
 
   if (registered) {
@@ -54,9 +24,9 @@ export const RegistrationPage = () => {
     <div className="container is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
       <Formik
         initialValues={{
-          name: "",
-          email: "",
-          password: "",
+          name: '',
+          email: '',
+          password: '',
         }}
         validateOnMount={true}
         onSubmit={({ name, email, password }, formikHelpers) => {
@@ -78,9 +48,9 @@ export const RegistrationPage = () => {
 
               const { errors, message } = error.response.data;
 
-              formikHelpers.setFieldError("name", errors?.name);
-              formikHelpers.setFieldError("email", errors?.email);
-              formikHelpers.setFieldError("password", errors?.password);
+              formikHelpers.setFieldError('name', errors?.name);
+              formikHelpers.setFieldError('email', errors?.email);
+              formikHelpers.setFieldError('password', errors?.password);
 
               if (message) {
                 setError(message);
@@ -101,14 +71,14 @@ export const RegistrationPage = () => {
 
               <div className="control has-icons-left has-icons-right">
                 <Field
-                  validate={validName}
+                  validate={validate.name}
                   name="name"
                   type="text"
                   id="name"
                   data-cy="name-sign-up"
                   placeholder="John Doe"
-                  className={cn("input", {
-                    "is-danger": touched.name && errors.name,
+                  className={cn('input', {
+                    'is-danger': touched.name && errors.name,
                   })}
                 />
 
@@ -134,14 +104,14 @@ export const RegistrationPage = () => {
 
               <div className="control has-icons-left has-icons-right">
                 <Field
-                  validate={validateEmail}
+                  validate={validate.email}
                   name="email"
                   type="email"
                   data-cy="email-sign-up"
                   id="email"
                   placeholder="e.g. bobsmith@gmail.com"
-                  className={cn("input", {
-                    "is-danger": touched.email && errors.email,
+                  className={cn('input', {
+                    'is-danger': touched.email && errors.email,
                   })}
                 />
 
@@ -167,14 +137,14 @@ export const RegistrationPage = () => {
 
               <div className="control has-icons-left has-icons-right">
                 <Field
-                  validate={validatePassword}
+                  validate={validate.password}
                   name="password"
                   type="password"
                   id="password"
                   data-cy="password-sign-up"
                   placeholder="*******"
-                  className={cn("input", {
-                    "is-danger": touched.password && errors.password,
+                  className={cn('input', {
+                    'is-danger': touched.password && errors.password,
                   })}
                 />
 
@@ -199,8 +169,8 @@ export const RegistrationPage = () => {
               <button
                 type="submit"
                 data-cy="submit-sign-up"
-                className={cn("button is-success has-text-weight-bold", {
-                  "is-loading": isSubmitting,
+                className={cn('button is-success has-text-weight-bold', {
+                  'is-loading': isSubmitting,
                 })}
                 disabled={isSubmitting || errors.email || errors.password}
               >

@@ -1,14 +1,15 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useEffect, useState } from "react";
-import cn from "classnames";
-import { todosService } from "../../services/todo.server";
-import { usePageError } from "../../hooks/usePageError";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useEffect, useState } from 'react';
+import cn from 'classnames';
+import { todosService } from '../../services/todo.server';
+import { usePageError } from '../../hooks/usePageError';
+import { validate } from '../../services/validators';
 
 export const TodoPage = () => {
-  const [, setError] = usePageError("");
+  const [, setError] = usePageError('');
   const [todos, setTodos] = useState([]);
-  const [filter, setFilter] = useState("All");
-  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState('All');
+  const [search, setSearch] = useState('');
   const [loading, isLoading] = useState(false);
   const [loadingId, isLoadingId] = useState(null);
   const [loadingTodo, isLoadingTodo] = useState(null);
@@ -33,20 +34,11 @@ export const TodoPage = () => {
     return title.includes(params);
   });
 
-  function validTodo(value) {
-    if (!value) {
-      return "Todo Name is required";
-    }
-    if (value.trim() === "") {
-      return "Todo Name is required";
-    }
-  }
-
   function filterSortBy(option) {
     switch (option) {
-      case "In progress":
+      case 'In progress':
         return todos.filter((todo) => todo.status !== true);
-      case "Finished":
+      case 'Finished':
         return todos.filter((todo) => todo.status !== false);
       default:
         return todos;
@@ -90,10 +82,10 @@ export const TodoPage = () => {
       <div className="box">
         <div
           className="is-flex-desktop is-justify-content-space-between mb-4 "
-          style={{ gap: "50px" }}
+          style={{ gap: '50px' }}
         >
           <Formik
-            initialValues={{ title: "" }}
+            initialValues={{ title: '' }}
             onSubmit={({ title }, formikHelpers) => {
               formikHelpers.setSubmitting(true);
               isLoading(true);
@@ -117,7 +109,7 @@ export const TodoPage = () => {
                 <div className="field has-addons">
                   <div className="control is-expanded">
                     <Field
-                      validate={validTodo}
+                      validate={validate.name}
                       className="input is-fullwidth"
                       type="text"
                       name="title"
@@ -128,8 +120,8 @@ export const TodoPage = () => {
                   <div className="control">
                     <button
                       type="submit"
-                      className={cn("button is-primary", {
-                        "is-loading": loading,
+                      className={cn('button is-primary', {
+                        'is-loading': loading,
                       })}
                       data-cy="addTodoButton-todos-page"
                     >
@@ -169,7 +161,7 @@ export const TodoPage = () => {
             </Formik>
           </div>
 
-          <div className="control" style={{ minWidth: "120px" }}>
+          <div className="control" style={{ minWidth: '120px' }}>
             <div className="select">
               <select
                 value={filter}
@@ -189,31 +181,31 @@ export const TodoPage = () => {
               key={todo.id}
               data-cy="todoBox-todos-page"
               className={cn(
-                "box mb-2 is-flex is-align-items-center is-justify-content-space-between",
+                'box mb-2 is-flex is-align-items-center is-justify-content-space-between',
                 {
-                  "has-background-danger-light": todo.status,
-                  "has-background-success-light": !todo.status,
+                  'has-background-danger-light': todo.status,
+                  'has-background-success-light': !todo.status,
                 }
               )}
             >
               <button
                 data-cy="todoButton-todos-page"
-                className={cn("button", {
-                  "is-danger": todo.status,
-                  "is-success": !todo.status,
-                  "is-loading": todo.id === loadingTodo,
+                className={cn('button', {
+                  'is-danger': todo.status,
+                  'is-success': !todo.status,
+                  'is-loading': todo.id === loadingTodo,
                 })}
                 onClick={() => {
                   toggleTodo(todo.id);
                 }}
               >
-                {todo.status ? "Undo" : "Done"}
+                {todo.status ? 'Undo' : 'Done'}
               </button>
               <h2
                 className="title is-4"
                 data-cy="todoTitle-todos-page"
                 style={{
-                  textDecoration: todo.status ? "line-through" : "none",
+                  textDecoration: todo.status ? 'line-through' : 'none',
                 }}
               >
                 {todo.title}
@@ -221,8 +213,8 @@ export const TodoPage = () => {
 
               <button
                 data-cy="todoDeleteButton-todos-page"
-                className={cn("button is-danger is-small", {
-                  "is-loading": todo.id === loadingId,
+                className={cn('button is-danger is-small', {
+                  'is-loading': todo.id === loadingId,
                 })}
                 onClick={() => deleteTodo(todo.id)}
               >

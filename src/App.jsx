@@ -11,7 +11,7 @@ import { RegistrationPage } from "./pages/utilsPages/RegistrationPage";
 import { RequireAuth } from "./components/RequireAuth";
 import { UsersPage } from "./pages/userPage/UsersPage.jsx";
 import { Loader } from "./components/Loader.jsx";
-import { HomePage } from "./pages/HomePages/HomePage.jsx";
+import { HomePage } from "./pages/homePages/HomePage.jsx";
 import { usePageError } from "./hooks/usePageError.js";
 import { ResetPassword } from "./pages/utilsPages/ResetPassword.jsx";
 import { PassResetEmail } from "./pages/utilsPages/PassResetEmailPage.jsx";
