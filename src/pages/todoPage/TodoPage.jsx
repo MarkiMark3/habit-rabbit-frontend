@@ -2,24 +2,22 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { todosService } from '../../services/todo.server';
-import { usePageError } from '../../hooks/usePageError';
 import { validate } from '../../services/validators';
 
 export const TodoPage = () => {
-  const [, setError] = usePageError('');
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
-  const [loading, isLoading] = useState(false);
-  const [loadingId, isLoadingId] = useState(null);
-  const [loadingTodo, isLoadingTodo] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(null);
+  const [loadingTodo, setLoadingTodo] = useState(null);
 
   const fetchData = () => {
     todosService
       .getTodos()
       .then(setTodos)
       .catch((error) => {
-        setError(error.message);
+        console.log(error);
       });
   };
   useEffect(() => {
@@ -46,7 +44,7 @@ export const TodoPage = () => {
   }
 
   const toggleTodo = (id) => {
-    isLoadingTodo(id);
+    setLoadingTodo(id);
     todosService
       .toggleTodo({ id })
       .then(() => {
@@ -56,12 +54,12 @@ export const TodoPage = () => {
         throw new Error(e);
       })
       .finally(() => {
-        isLoadingTodo(null);
+        setLoadingTodo(null);
       });
   };
 
   const deleteTodo = (id) => {
-    isLoadingId(id);
+    setLoadingDelete(id);
     todosService
       .deleteTodo({ id })
       .then(() => {
@@ -71,7 +69,7 @@ export const TodoPage = () => {
         throw new Error(e);
       })
       .finally(() => {
-        isLoadingId(null);
+        setLoadingDelete(null);
       });
   };
 
@@ -88,7 +86,7 @@ export const TodoPage = () => {
             initialValues={{ title: '' }}
             onSubmit={({ title }, formikHelpers) => {
               formikHelpers.setSubmitting(true);
-              isLoading(true);
+              setLoading(true);
               todosService
                 .addTodo({ title })
                 .then(() => {
@@ -100,7 +98,7 @@ export const TodoPage = () => {
                 })
                 .finally(() => {
                   formikHelpers.setSubmitting(false);
-                  isLoading(false);
+                  setLoading(false);
                 });
             }}
           >
@@ -214,7 +212,7 @@ export const TodoPage = () => {
               <button
                 data-cy="todoDeleteButton-todos-page"
                 className={cn('button is-danger is-small', {
-                  'is-loading': todo.id === loadingId,
+                  'is-loading': todo.id === loadingDelete,
                 })}
                 onClick={() => deleteTodo(todo.id)}
               >

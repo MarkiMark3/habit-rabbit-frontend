@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import { authService } from "../../services/authService";
-import { usePageError } from "../../hooks/usePageError";
-import { HomePageUser } from "./HomePageUser";
-import { HomePageNew } from "./HomePageNew";
+import { useEffect, useState } from 'react';
+import { authService } from '../../services/authService';
+import { HomePageUser } from './HomePageUser';
+import { HomePageNew } from './HomePageNew';
 
 export const HomePage = () => {
-  const [, setError] = usePageError("");
   const [user, setUser] = useState({});
 
   const fetchUser = () => {
@@ -13,7 +11,7 @@ export const HomePage = () => {
       .getUser()
       .then(setUser)
       .catch((error) => {
-        setError(error.message);
+        console.log(error);
       });
   };
   useEffect(() => {

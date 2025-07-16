@@ -2,23 +2,21 @@ import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { habitsService } from '../../services/habits.server';
-import { usePageError } from '../../hooks/usePageError';
 import './HabitsPage.scss';
 import { validate } from '../../services/validators';
 
 export const HabitsPage = () => {
-  const [, setError] = usePageError('');
   const [habits, setHabits] = useState([]);
-  const [loading, isLoading] = useState(false);
-  const [loadingId, isLoadingId] = useState(null);
-  const [loadingHabit, isLoadingHabit] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(null);
+  const [loadingHabit, setLoadingHabit] = useState(null);
 
   const fetchData = () => {
     habitsService
       .getHabits()
       .then(setHabits)
       .catch((error) => {
-        setError(error.message);
+        console.log(error);
       });
   };
 
@@ -27,7 +25,7 @@ export const HabitsPage = () => {
   }, []);
 
   const toggleHabit = (id) => {
-    isLoadingHabit(id);
+    setLoadingHabit(id);
     habitsService
       .toggleHabit({ id })
       .then(() => {
@@ -37,12 +35,12 @@ export const HabitsPage = () => {
         throw new Error(e);
       })
       .finally(() => {
-        isLoadingHabit(false);
+        setLoadingHabit(false);
       });
   };
 
   const deleteHabit = (id) => {
-    isLoadingId(id);
+    setLoadingDelete(id);
     habitsService
       .deleteHabit({ id })
       .then(() => {
@@ -52,7 +50,7 @@ export const HabitsPage = () => {
         throw new Error(e);
       })
       .finally(() => {
-        isLoadingId(null);
+        setLoadingDelete(null);
       });
   };
 
@@ -66,7 +64,7 @@ export const HabitsPage = () => {
           <Formik
             initialValues={{ title: '' }}
             onSubmit={({ title }, formikHelpers) => {
-              isLoading(true);
+              setLoading(true);
               formikHelpers.setSubmitting(true);
 
               habitsService
@@ -80,7 +78,7 @@ export const HabitsPage = () => {
                 })
                 .finally(() => {
                   formikHelpers.setSubmitting(false);
-                  isLoading(false);
+                  setLoading(false);
                 });
             }}
           >
@@ -164,7 +162,7 @@ export const HabitsPage = () => {
                 </div>
                 <button
                   className={cn('button is-danger is-small', {
-                    'is-loading': habit.id === loadingId,
+                    'is-loading': habit.id === loadingDelete,
                   })}
                   data-cy="habitDeleteButton-habits-page"
                   onClick={() => deleteHabit(habit.id)}
