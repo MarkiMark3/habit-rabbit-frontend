@@ -62,7 +62,7 @@ export const RegistrationPage = () => {
         }}
       >
         {({ touched, errors, isSubmitting }) => (
-          <Form className="box column is-half">
+          <Form className="box column is-half mb-3">
             <h1 className="title">Sign up</h1>
             <div className="field">
               <label htmlFor="name" className="label">
@@ -182,7 +182,11 @@ export const RegistrationPage = () => {
         )}
       </Formik>
 
-      {error && <p className="notification is-danger is-light">{error}</p>}
+      {error && (
+        <p className="notification is-danger is-light column is-half">
+          {error}
+        </p>
+      )}
     </div>
   );
 };

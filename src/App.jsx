@@ -1,23 +1,23 @@
-import { useContext, useEffect } from "react";
-import { Routes, Route, Link, useNavigate, NavLink } from "react-router-dom";
+import { useContext, useEffect } from 'react';
+import { Routes, Route, Link, useNavigate, NavLink } from 'react-router-dom';
 
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "./styles.scss";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './styles.scss';
 
-import { AccountActivationPage } from "./pages/utilsPages/AccountActivationPage";
-import { AuthContext } from "./components/AuthContext";
-import { LoginPage } from "./pages/loginPage/LoginPage.jsx";
-import { RegistrationPage } from "./pages/utilsPages/RegistrationPage";
-import { RequireAuth } from "./components/RequireAuth";
-import { UsersPage } from "./pages/userPage/UsersPage.jsx";
-import { Loader } from "./components/Loader.jsx";
-import { HomePage } from "./pages/homePages/HomePage.jsx";
-import { usePageError } from "./hooks/usePageError.js";
-import { ResetPassword } from "./pages/utilsPages/ResetPassword.jsx";
-import { PassResetEmail } from "./pages/utilsPages/PassResetEmailPage.jsx";
-import { ChangeEmailPage } from "./pages/utilsPages/ChangeEmail.jsx";
-import { HabitsPage } from "./pages/habitsPage/habitsPage.jsx";
-import { TodoPage } from "./pages/todoPage/TodoPage.jsx";
+import { AccountActivationPage } from './pages/utilsPages/AccountActivationPage';
+import { AuthContext } from './components/AuthContext';
+import { LoginPage } from './pages/loginPage/LoginPage.jsx';
+import { RegistrationPage } from './pages/utilsPages/RegistrationPage';
+import { RequireAuth } from './components/RequireAuth';
+import { UsersPage } from './pages/userPage/UsersPage.jsx';
+import { Loader } from './components/Loader.jsx';
+import { HomePage } from './pages/homePages/HomePage.jsx';
+import { usePageError } from './hooks/usePageError.js';
+import { ResetPassword } from './pages/utilsPages/ResetPassword.jsx';
+import { PassResetEmail } from './pages/utilsPages/PassResetEmailPage.jsx';
+import { ChangeEmailPage } from './pages/utilsPages/ChangeEmail.jsx';
+import { HabitsPage } from './pages/habitsPage/habitsPage.jsx';
+import { TodoPage } from './pages/todoPage/TodoPage.jsx';
 
 function App() {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ function App() {
                   onClick={() => {
                     logout()
                       .then(() => {
-                        navigate("/login");
+                        navigate('/login');
                       })
                       .catch((error) => {
                         setError(error.response?.data?.message);
@@ -106,7 +106,7 @@ function App() {
             />
             <Route path="newEmail/:email" element={<ChangeEmailPage />} />
             <Route path="reset" element={<PassResetEmail />} />
-            <Route path="resetPassword" element={<ResetPassword />} />
+            <Route path="resetPassword/:email" element={<ResetPassword />} />
             <Route path="login" element={<LoginPage />} />
 
             <Route path="/" element={<RequireAuth />}>

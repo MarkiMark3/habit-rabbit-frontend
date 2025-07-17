@@ -5,11 +5,13 @@ import cn from 'classnames';
 import { usePageError } from '../../hooks/usePageError.js';
 import { authService } from '../../services/authService.js';
 import { validate } from '../../services/validators.js';
+import { useParams } from 'react-router-dom';
 
 export const ResetPassword = () => {
   const [error, setError] = usePageError('');
 
   const [reset, setReset] = useState(false);
+  const { email } = useParams();
 
   if (reset) {
     return (
@@ -31,7 +33,7 @@ export const ResetPassword = () => {
           formikHelpers.setSubmitting(true);
 
           authService
-            .resetPass({ password, confirmPassword })
+            .resetPass({ password, confirmPassword, email })
             .then(() => {
               setReset(true);
             })

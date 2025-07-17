@@ -33,7 +33,7 @@ export const LoginPage = () => {
         }}
       >
         {({ touched, errors, isSubmitting }) => (
-          <Form className="box column is-half">
+          <Form className="box column is-half mb-3">
             <h1 className="title">Log in</h1>
             <div className="field">
               <label htmlFor="email" className="label">
@@ -124,7 +124,11 @@ export const LoginPage = () => {
         )}
       </Formik>
 
-      {error && <p className="notification is-danger is-light">{error}</p>}
+      {error && (
+        <p className="notification is-danger is-light column is-half ">
+          {error}
+        </p>
+      )}
     </div>
   );
 };
