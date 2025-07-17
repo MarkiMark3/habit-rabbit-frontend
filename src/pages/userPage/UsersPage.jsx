@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { usePageError } from '../../hooks/usePageError.js';
-import './UserPage.scss';
+import './userPage.scss';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import cn from 'classnames';
