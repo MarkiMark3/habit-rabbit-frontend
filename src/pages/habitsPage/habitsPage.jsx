@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { habitsService } from '../../services/habits.server';
-import './HabitsPage.scss';
+import './habitsPage.scss';
 import { validate } from '../../services/validators';
 
 export const HabitsPage = () => {
